@@ -1,0 +1,11 @@
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+WORKDIR /build
+COPY . .
+RUN mvn -q -DskipTests install
+RUN mvn -q -pl HotelClient dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=/build/HotelClient/target/dependency
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+COPY --from=build /build/HotelClient/target/HotelClient-1.0-SNAPSHOT.jar HotelClient.jar
+COPY --from=build /build/HotelClient/target/dependency dependency
+
+ENTRYPOINT ["java", "-cp", "HotelClient.jar:dependency/*", "hotel.HotelApplClient"]

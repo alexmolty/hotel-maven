@@ -37,7 +37,7 @@ public class ServerJava implements Runnable {
     public void stop() {
         try {
             serverSocket.close();
-        } catch (Exception _) {
+        } catch (Exception e) {
 
         }
     }

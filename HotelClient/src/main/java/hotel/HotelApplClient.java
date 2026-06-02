@@ -14,14 +14,17 @@ import hotel.resources.HotelApplContext;
 import java.util.List;
 
 public class HotelApplClient {
-    private static final String HOST = "localhost";
-    private static final int PORT = 8888;
+    private static final String DEFAULT_HOST = "localhost";
+    private static final String DEFAULT_PORT = "8888";
     private static final String DATE_FORMAT = "dd.MM.yyyy";
 
     public static void main(String[] args) {
         try {
+            String host = System.getenv().getOrDefault("HOST", DEFAULT_HOST);
+            int port = Integer.parseInt(System.getenv().getOrDefault("PORT", DEFAULT_PORT));
+
             InputOutput inOut = new ConsoleInputOutput();
-            HotelTCPProxy proxy = new HotelTCPProxy(HOST, PORT);
+            HotelTCPProxy proxy = new HotelTCPProxy(host, port);
             IHotelInfoService hotelInfoService = proxy;
             IHotelManagingService hotelManagingService = proxy;
             HotelApplContext context = new HotelApplContext(inOut, hotelInfoService, hotelManagingService, DATE_FORMAT);

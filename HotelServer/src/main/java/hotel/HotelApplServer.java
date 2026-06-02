@@ -11,7 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class HotelApplServer {
-    private static final int PORT = 8888;
+    private static final String DEFAULT_PORT = "8888";
 
     public static void main(String[] args) {
         System.out.println(">>> Initializing Hotel Server...");
@@ -39,9 +39,10 @@ public class HotelApplServer {
             HotelDataSaver dataSaver = new HotelDataSaver(hotel, fileService);
 
             HotelTCPProtocol protocol = new HotelTCPProtocol(manager, infoService, dataSaver);
-            ServerJava server = new ServerJava(protocol, PORT);
+            int port = Integer.parseInt(System.getenv().getOrDefault("PORT", DEFAULT_PORT));
+            ServerJava server = new ServerJava(protocol, port);
 
-            System.out.println(">>> Server successfully started on port " + PORT + ". Waiting for clients...");
+            System.out.println(">>> Server successfully started on port " + port + ". Waiting for clients...");
             server.run();
 
         } catch (Exception e) {

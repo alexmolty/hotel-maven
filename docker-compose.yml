@@ -1,0 +1,28 @@
+services:
+  HotelServer:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    image: hotel-server-lesson40:1.0
+    container_name: h-s-ls40
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./room_types.data:/app/room_types.data
+      - ./rooms.data:/app/rooms.data
+      - ./guests.data:/app/guests.data
+      - ./bookings.data:/app/bookings.data
+
+  HotelClient:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    image: hotel-client-lesson40:1.0
+    container_name: h-c-ls40
+    stdin_open: true
+    tty: true
+    environment:
+      HOST: HotelServer
+      PORT: 8888
+    depends_on:
+      - HotelServer

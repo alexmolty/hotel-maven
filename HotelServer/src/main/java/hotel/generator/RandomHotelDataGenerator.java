@@ -84,7 +84,7 @@ public class RandomHotelDataGenerator {
 
             try {
                 manager.createBooking(randGuest, randRoom, checkIn, checkOut);
-            } catch (Exception _) {
+            } catch (Exception e) {
 
             }
         }
